@@ -1,3 +1,9 @@
+let gameStart = true;
+let gameRunning = false;
+let gameOver = true;
+let gameWin = true;
+let velocity = 0.5;
+
 //Creating the canvas
 function canvas () {
     createCanvas(windowWidth, windowHeight);
@@ -15,34 +21,6 @@ let stars = [];
     };
 
     stars.push(star);
-}
-
-//LOGO
-function logo () {
-    fill("darkred");
-    stroke(255, 255, 255);
-    strokeWeight(0.5);
-    textSize(19);
-    textFont("Futura");
-    text("LunarLander", 20, 40);
-}
-
-//BIG LOGO for start page
-function biglogo() {
-    fill("darkred");
-    stroke(255, 255, 255);
-    strokeWeight(1);
-    textSize(60);
-    textFont("Futura");
-    text("LunarLander", 130, 190);
-    
-}
-
-//Button to start the game
-function startGameButton () {
-    let button = createButton("Start Game");
-    button.position(width / 2 -25, height / 2);
-
 }
 
 //Drawing the moon
@@ -68,6 +46,52 @@ function moon() {
     ellipse(500, 455, 30, 10);
     ellipse(350, 440, 30, 10);
     pop();
+}
+
+
+/////////////////////
+//Button to start the game
+function startGameButton () {
+    stroke(0);
+    strokeWeight(2);
+    fill(255, 255, 255);
+    rect(width / 2 - 45, height / 2, 90, 30, 3, 3, 3, 3);
+
+    fill(0, 0, 0);
+    noStroke();
+    textSize(14);
+    textFont("Arial");
+    textAlign(CENTER);
+    text("Start Game", width / 2, height / 2 + 20);
+}
+
+//BIG LOGO for start page
+function biglogo() {
+    fill("darkred");
+    stroke(255, 255, 255);
+    strokeWeight(1);
+    textSize(60);
+    textFont("Futura");
+    textAlign(CENTER);
+    text("LunarLander", width / 2, height / 2 - 50);
+    
+}
+
+//FIRST PAGE FUNCTION
+function setup() {
+    biglogo();
+    startGameButton();
+}
+
+///////////////////
+//LOGO
+function logo () {
+    fill("darkred");
+    stroke(255, 255, 255);
+    strokeWeight(0.5);
+    textSize(19);
+    textFont("Futura");
+    text("LunarLander", 70, 40);
 }
 
 //Drawing the spacecraft
@@ -101,6 +125,30 @@ function spacecraft(x, y) {
     pop();
 }
 
+//FUCTION FOR SECOND PAGE
+//function secondPage() {
+   // logo();
+    //spacecraft(spacecraftX, spacecraftY);
+//}
+
+function beginGame () {
+    gameStart = false;
+    gameRunning = true;
+    gameOver = false;
+    gameWin = false;
+}
+
+function mousePressed() {
+    if (
+      mouseX > width / 2 - 45 &&
+      mouseX < width / 2 + 45 &&
+      mouseY > height / 2 &&
+      mouseY < height / 2 + 30 &&
+      gameStart
+    ) {
+      beginGame();
+    }
+  }
 
 function draw () {
     canvas();
@@ -112,10 +160,21 @@ function draw () {
         ellipse(star.x, star.y, 2);
     }
 
-    //logo();
-    biglogo();
     moon();
 
-    startGameButton();
-    //spacecraft(spacecraftX, spacecraftY);
+    if (gameStart) {
+       setup();
+    }
+
+    if (gameRunning) {
+        logo();
+        spacecraft(spacecraftX, spacecraftY);
+
+        spacecraftY = spacecraftY + velocity;
+        velocity = velocity + 0.01;
+
+        if (keyIsDown(38)) {
+            velocity = velocity - 0.05;
+        }
+    }   
 }
