@@ -2,7 +2,10 @@ let gameStart = true;
 let gameRunning = false;
 let gameOver = false;
 let gameWin = false;
-let velocity = 0.5;
+let velocityY = 0.5;
+let velocityX = 0.5;
+let accelerationX = 0;   // No acceleration along the x-axis
+let accelerationY = 0.1;
 
 //Drawing the stars
 let stars = [];
@@ -11,10 +14,28 @@ let stars = [];
 let spacecraftY;
 let spacecraftX;
 
+//variables for crush pieces
+let crushOneX;
+let crushOneY;
+
+let crushTwoX;
+let crushTwoY;
+
+let crushThreeX;
+let crushThreeY;
+
+let crushFourX;
+let crushFourY;
+
+let crushFiveX;
+let crushFiveY;
+
 //Creating the canvas
 function setup () {
-    let cnv = createCanvas(1200, 700);
+    let cnv = createCanvas(windowWidth, windowHeight);
+    cnv.style('display', 'block');
     background(255, 255, 255);
+    frameRate(40);
 
     for (i = 0; i < 300; i++) {
         const star = {
@@ -27,41 +48,31 @@ function setup () {
     }
 
     spacecraftX = width / 2;
-    spacecraftY = height / 2;
+    spacecraftY = 200;
+
+    crushOneX = width / 2;
+    crushOneY = height - 110;
+
+    crushTwoX = width / 2;
+    crushTwoY = height - 110;
+
+    crushThreeX = width / 2;
+    crushThreeY = height - 110;
+
+    crushFourX = width / 2;
+    crushFourY = height - 110;
+    
+    crushFiveX = width / 2;
+    crushFiveY = height - 110;
 }
 
 //Drawing the moon
-function moon() {
-    push();
-    stroke("white");
-    strokeWeight(1);
-    fill(200, 210, 200);
-    beginShape();
-    vertex(-50, moonY);
-    bezierVertex(-50, 430, width + 50, 430, width + 50, moonY);
-    endShape();
-    pop();
-
-    push();
-    noStroke();
-    fill(90, 90, 90, 70);
-    ellipse(200, height - 50, 30, 10);
-    ellipse(60, height - 30, 30, 10);
-    ellipse(130, height - 40, 30, 10);
-    ellipse(400, height - 30, 30, 10);
-    ellipse(275, height - 40, 30, 10);
-    ellipse(490, height - 40, 30, 10);
-    ellipse(330, height - 50, 30, 10);
-    ellipse(560, height - 30, 30, 10);
-    pop();
-}
-
 function moonTwo() {
     push();
     stroke("white");
     strokeWeight(1);
     fill(200, 210, 200);
-    rect(0, 600, width, 100);
+    rect(0, height - 100, width, 100);
     pop();
 }
 
@@ -86,14 +97,13 @@ function biglogo() {
     fill("darkred");
     stroke(255, 255, 255);
     strokeWeight(1);
-    textSize(60);
+    textSize(100);
     textFont("Futura");
     textAlign(CENTER);
     text("LunarLander", width / 2, height / 2 - 50);
     
 }
 
-//FIRST PAGE FUNCTION
 function firstPage() {
     biglogo();
     startGameButton();
@@ -115,13 +125,13 @@ function spacecraft(x, y) {
     push();
     fill("darkred");
     translate(x, y);
-    ellipse(0, 0, 25, 60);
+    ellipse(0, 0 - 30, 25, 60);
     pop();
 
     push();
     fill("darkred");
     translate(x, y);
-    rect(0 - 25, 0 + 10, 50, 20, 100, 100, 0, 0);
+    rect(0 - 25, 0 - 20, 50, 20, 100, 100, 0, 0);
     pop();
 }
 
@@ -135,15 +145,16 @@ function beginGame () {
 ////////////////// THIRD PAGE
 //GAME OVER TEXT
 function gameOverText() {
-    fill("darkred");
+    fill(210, 210, 210);
     stroke(255, 255, 255);
     strokeWeight(1);
     textSize(60);
     textFont("Futura");
     textAlign(CENTER);
-    text("Game Over", width / 2, height / 2 - 50);
+    text("Houston, we have a problem..", width / 2, height / 2 - 50);
 }
 
+//Restart game button
 function restartButton() {
     stroke(0);
     strokeWeight(2);
@@ -158,26 +169,108 @@ function restartButton() {
     text("Restart Game", width / 2, height / 2 + 20);
 }
 
+let triangleRotation = 0;
+
+//Crush the spacecraft into pieces
+//1CRUSH PIECE
+function crushOne() {
+    push();
+    translate(crushOneX, crushOneY);
+    rotate(triangleRotation);
+    fill('darkred');
+    triangle(0, 0, -20, -10, -12, 13);
+    pop();
+
+    triangleRotation = triangleRotation + 0.02;
+}
+
+//2CRUSH PIECE
+function crushTwo() {
+    push();
+    translate(crushTwoX, crushTwoY);
+    rotate(triangleRotation);
+    fill('darkred');
+    triangle(+ 10, 0, -10, -15, 5, 10);
+    pop();
+
+    triangleRotation = triangleRotation + 0.02;
+}
+
+//3CRUSH PIECE
+function crushThree() {
+    push();
+    translate(crushThreeX, crushThreeY);
+    rotate(triangleRotation);
+    fill('darkred');
+    triangle(+ 20, -10, 20, 15, 15, 10);
+    pop();
+
+    triangleRotation = triangleRotation + 0.02;
+}
+
+//4CRUSH PIECE
+function crushFour() {
+    push();
+    translate(crushFourX, crushFourY);
+    rotate(triangleRotation);
+    fill('darkred');
+    triangle(0, -20, 16, -10, 0, -30);
+    pop();
+
+    triangleRotation = triangleRotation + 0.02;
+}
+
+//5CRUSH PIECE
+function crushFive() {
+    push();
+    translate(crushFiveX, crushFiveY);
+    rotate(triangleRotation);
+    fill('darkred');
+    triangle(10, -20, 3, -17, 0, -25);
+    pop();
+
+    triangleRotation = triangleRotation + 0.02;
+}
+
+
 function gameIsOver() {
     gameStart = false;
     gameRunning = false;
     gameOver = true;
     gameWin = false;
 
+    logo();
+    crushOne();
+    crushTwo();
+    crushThree();
+    crushFour();
+    crushFive();
     gameOverText();
     restartButton();
+
+    crushOneX = crushOneX - 1;
+
+    crushTwoX = crushTwoX - 1;
+    crushTwoY = crushTwoY - 1;
+
+    crushThreeY = crushThreeY - 1;
+
+    crushFourX = crushFourX + 1;
+    crushFourY = crushFourY - 0.5;
+
+    crushFiveX = crushFiveX + 1;    
 }
 
 //////////////// FOURTH PAGE
 //YOU WON TEXT
 function gameWonText() {
-    fill("darkred");
+    fill(210, 210, 210);
     stroke(255, 255, 255);
     strokeWeight(1);
     textSize(60);
     textFont("Futura");
     textAlign(CENTER);
-    text("You Won", width / 2, height / 2 - 50);
+    text("The Eagle has landed!", width / 2, height / 2 - 50);
 }
 
 function gameIsWon() {
@@ -188,6 +281,8 @@ function gameIsWon() {
 
     gameWonText();
     restartButton();
+    logo();
+    spacecraft(spacecraftX, height - 100);
 }
 
 ////////////// STARTING TO DRAW EVERYTHING
@@ -222,11 +317,13 @@ function draw () {
 
     for (let star of stars) {
         noStroke();
-        fill(255, 255, 255, 100);
+        fill(210, 210, 210, Math.abs(Math.sin(star.alpha)) * 255);
         ellipse(star.x, star.y, 2);
+        star.alpha = star.alpha + 0.02;
     }
 
     moonTwo();
+    //crushpieces();
 
     if (gameStart) {
        firstPage();
@@ -236,20 +333,31 @@ function draw () {
         logo();
         spacecraft(spacecraftX, spacecraftY);
 
-        spacecraftY = spacecraftY + velocity;
-        velocity = velocity + 0.1;
+        spacecraftX = spacecraftX + velocityX;
+        velocityX = velocityX + accelerationX;
+
+        // Update spacecraft position and velocity on the y-axis
+        spacecraftY = spacecraftY + velocityY;
+        velocityY = velocityY + accelerationY;
+
+        if (frameCount % 30 === 0) { // Change velocity every 60 frames
+            velocityX = random(-1, 1); // Adjust the range based on your preference
+        }
 
         if (keyIsDown(38)) {
-            velocity = velocity - 0.5;
+            velocityY = velocityY - 0.5;
         }
 
         fill("white");
         textSize(13);
-        text("Speed: " + Math.floor(velocity), 50, 80);
+        text("Speed: " + Math.floor(velocityY), 50, 80);
     }  
 
-    if (spacecraftY > 600) {
+    if (spacecraftY > height - 100 && velocityY > 2) {
         gameIsOver();
     }
 
+    if (spacecraftY > height - 100 && velocityY < 2) {
+        gameIsWon();
+    }
 }
