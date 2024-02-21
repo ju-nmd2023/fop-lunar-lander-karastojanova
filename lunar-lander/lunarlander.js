@@ -4,7 +4,7 @@ let gameOver = false;
 let gameWin = false;
 let velocityY = 0.5;
 let velocityX = 0.5;
-let accelerationX = 0;   // No acceleration along the x-axis
+let accelerationX = 0;
 let accelerationY = 0.1;
 
 //Drawing the stars
@@ -336,15 +336,14 @@ function draw () {
         spacecraftX = spacecraftX + velocityX;
         velocityX = velocityX + accelerationX;
 
-        // Update spacecraft position and velocity on the y-axis
         spacecraftY = spacecraftY + velocityY;
         velocityY = velocityY + accelerationY;
 
-        if (frameCount % 30 === 0) { // Change velocity every 60 frames
-            velocityX = random(-1, 1); // Adjust the range based on your preference
+        if (frameCount % 30 === 0) {
+            velocityX = random(-1, 1);
         }
 
-        if (keyIsDown(38)) {
+        if (keyIsDown(40)) {
             velocityY = velocityY - 0.5;
         }
 
